@@ -1,26 +1,28 @@
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import React from 'react';
 import { FiThumbsUp } from'react-icons/fi';
 import { FaRegCommentAlt } from 'react-icons/fa';
 import { RiShareForwardLine } from 'react-icons/ri';
 
-const Post = () => {
+const Post = ({ post }) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col' key={post.div}>
        <div className='bg-white mt-6 rounded-md p-4'>
               <div className='flex items-center space-x-2'>
-                     <img src="https://upload.wikimedia.org/wikipedia/en/0/04/Facebook_f_logo_%282021%29.svg" className='rounded-full w-10 h-10'/>
+                     <img src={post.profilePic} className='rounded-full w-10 h-10'/>
                      <div>
-                            <p className='font-medium'>Aanal Panchal</p>
-                            <p className='text-xs text-gray-500'>{new Date().toLocaleString()}</p>
+                            <p className='font-medium'>{post.name}</p>
+                            <p className='text-xs text-gray-500'>{ post.timeStamp }</p>
                      </div>
               </div>
-              <p className='py-4'>ekw</p>
+              <p className='py-4'>{post.post}</p>
        </div>
        {/* If any Image*/}
-       <div className='relative h-60 md:h-96 bg-white'>
-              <Image src="https://images.pexels.com/photos/3011842/pexels-photo-3011842.jpeg?auto=compress&cs=tinysrgb&w=400" layout='fill' objectFit='cover'/>
-       </div>
+       {post.image != null && (
+              <div className='relative h-60 md:h-96 bg-white'>
+                     <Image src={post.image} layout='fill' objectFit='cover'/>
+              </div>
+       )}
        {/* Footer*/}
        <div className='flex items-center justify-center bg-white p-2'>
               <div className='flex items-center space-x-1 hover:bg-gray-100 flex-grow justify-center p-2 rounded-xl cursor-pointer'>
