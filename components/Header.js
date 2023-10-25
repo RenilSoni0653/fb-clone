@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { HiOutlineSearch, HiOutlineHome } from "react-icons/hi";
 import { RiFlag2Line } from "react-icons/ri";
 import { MdOutlineOndemandVideo, MdOutlineExpandMore } from "react-icons/md";
@@ -10,8 +10,14 @@ import { signOut, useSession } from "next-auth/react";
 
 const Header = () => {
   const { data: session } = useSession();
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
   return (
-    <div className=" bg-white flex items-center p-2 shadow-md top-0 sticky z-50 h-16">
+    <div className="bg-white flex items-center p-2 shadow-md top-0 sticky z-50 h-16">
       {/* {Left} */}
       <div className="flex min-w-fit">
         <Image
@@ -49,16 +55,17 @@ const Header = () => {
         </div>
       </div>
       {/* {Right} */}
-      <div className="flex items-center justify-end min-w-fit space-x-2">
-        <Image onClick={signOut} className="rounded-full cursor-pointer"
-          src={session?.user.image}
-          height={40}
-          width={40}
-        />
-        <p className="hidden xl:inline-flex font-semibold text-sm whitespace-nowrap p-3 max-w-xs">
-          { session?.user.name.split(" ")[0] }
-        </p>
-        <CgMenuGridO
+      <Image
+            className="rounded-full"
+            src={session?.user.image}
+            height={40}
+            width={40}
+          />
+          <p className="hidden xl:inline-flex font-semibold text-sm whitespace-nowrap p-3 max-w-xs">
+           { session?.user.name.split(" ")[0] }
+         </p>
+         <div className="flex items-center space-x-2">
+         <CgMenuGridO
           size={20}
           className="hidden lg:inline-flex h-10 w-10 bg-gray-200 text-gray-600 rounded-full p-2 cursor-pointer hover:bg-gray-300"
         />
@@ -70,11 +77,31 @@ const Header = () => {
           size={20}
           className="hidden lg:inline-flex h-10 w-10 bg-gray-200 text-gray-600 rounded-full p-2 cursor-pointer hover:bg-gray-300"
         />
-        <MdOutlineExpandMore
-          size={20}
-          className="hidden lg:inline-flex h-10 w-10 bg-gray-200 text-gray-600 rounded-full p-2 cursor-pointer hover:bg-gray-300"
-        />
+
+      <div className="flex items-center justify-end min-w-fit space-x-2">
+        <div
+          className="relative group cursor-pointer"
+          onClick={handleDropdownToggle}
+          onBlur={() => setShowDropdown(false)}
+        >          
+          <MdOutlineExpandMore
+           size={20}
+           className="hidden lg:inline-flex h-10 w-10 bg-gray-200 text-gray-600 rounded-full p-2 cursor-pointer hover:bg-gray-300"
+         />
+          {showDropdown && (
+            <div className="absolute top-10 right-0 mt-2 w-40 bg-white border border-gray-300 rounded-lg shadow-lg">
+              <button
+                className="px-4 py-2 w-full text-left hover:bg-gray-100"
+                onClick={signOut}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+        
       </div>
+    </div>
     </div>
   );
 };

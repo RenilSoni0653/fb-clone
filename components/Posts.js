@@ -18,7 +18,7 @@ const Posts = () => {
       });
     };
     fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
